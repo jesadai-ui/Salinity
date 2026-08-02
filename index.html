@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>โปรแกรมเตรียมน้ำเค็มสำหรับอนุบาลลูกกุ้ง</title>
+    <!-- นำเข้าฟอนต์ TH Sarabun New -->
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        /* พื้นหลังสีเขียวหัวเป็ดที่มีความเงางาม */
+        body {
+            background: linear-gradient(135deg, #00a896 0%, #028090 50%, #005f73 100%);
+            background-attachment: fixed;
+            font-family: 'Sarabun', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px 10px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 850px; /* ขยายให้สมส่วน */
+            margin: 0 auto;
+        }
+
+        /* ส่วนหัวของโปรแกรม */
+        .main-title {
+            text-align: center;
+            color: #ffffff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+            margin-bottom: 20px;
+        }
+        .main-title h1 {
+            font-size: 40px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            line-height: 1.2;
+        }
+        .main-title h2 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #ffdf00;
+            margin-top: 0;
+        }
+
+        /* กล่องแสดงผู้ใช้งาน */
+        .counter-box {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 8px;
+            margin: 0 auto 30px auto;
+            max-width: 400px;
+            font-size: 20px;
+            border: 1px solid rgba(255,255,255,0.3);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        /* กล่องแบ่งแต่ละกรณี - สีพาสเทลสบายตา */
+        .case-box {
+            border: 2px solid #555;
+            border-radius: 12px;
+            padding: 25px 20px;
+            margin-bottom: 40px;
+            box-shadow: 0px 8px 20px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* จัดให้อยู่กึ่งกลาง */
+        }
+        
+        .case-1 { background-color: #F0FAFA; border-color: #4DD0E1; } /* ฟ้าอ่อนพาสเทล */
+        .case-2 { background-color: #FAF0FA; border-color: #BA68C8; } /* ม่วงอ่อนพาสเทล */
+        .case-3 { background-color: #F0FAF0; border-color: #81C784; } /* เขียวอ่อนพาสเทล */
+        .case-4 { background-color: #FFF9E6; border-color: #FFB74D; } /* เหลืองส้มอ่อนพาสเทล */
+        .case-5 { background-color: #F0F5FA; border-color: #64B5F6; } /* น้ำเงินอ่อนพาสเทล */
+
+        .case-title {
+            text-align: center;
+            color: #222;
+            margin-top: 0;
+            margin-bottom: 25px;
+            border-bottom: 2px dashed #999;
+            padding-bottom: 10px;
+            font-size: 24px;
+            font-weight: 800;
+            width: 100%;
+        }
+
+        .row {
+            display: flex;
+            align-items: stretch;
+            margin-bottom: 15px;
+            gap: 15px;
+            width: 100%;
+            max-width: 650px;
+            justify-content: center;
+        }
+
+        /* ป้ายข้อความสีพาสเทล */
+        .label-base {
+            padding: 8px 15px;
+            font-size: 20px;
+            font-weight: 600;
+            flex: 1;
+            border: 1px solid #aaa;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center; /* ข้อความอยู่ตรงกลางเป๊ะ */
+            text-align: center;
+            box-shadow: inset 0px 0px 5px rgba(255,255,255,0.5);
+        }
+        
+        .label-green { background-color: #C8E6C9; color: #1B5E20; }
+        .label-cyan { background-color: #B2DFDB; color: #004D40; }
+        .label-yellow { background-color: #FFF9C4; color: #F57F17; }
+        .label-pink { background-color: #F8BBD0; color: #880E4F; }
+        .label-blue { background-color: #BBDEFB; color: #0D47A1; }
+
+        /* ช่องกรอกข้อมูล */
+        .input-field, .output-field {
+            flex: 1;
+            max-width: 250px;
+            background-color: #ffffff; /* ปรับให้สว่างขึ้นเพื่อให้ตัดกับพื้นหลังพาสเทล */
+            border: 1px solid #999;
+            border-bottom: 3px solid #555;
+            font-size: 20px;
+            padding: 8px;
+            text-align: center;
+            color: #111;
+            border-radius: 6px;
+            font-family: 'Sarabun', sans-serif;
+            transition: all 0.3s ease;
+        }
+        
+        .input-field:focus {
+            outline: none;
+            border-bottom: 3px solid #D84315;
+            background-color: #FFF3E0;
+            transform: scale(1.02); /* ขยายเล็กน้อยเมื่อพิมพ์ */
+        }
+
+        .output-field {
+            font-weight: 800;
+            background-color: #f1f8e9; /* พื้นหลังช่องผลลัพธ์เป็นสีเขียวอ่อนมาก */
+            border-bottom: 1px solid #999;
+        }
+
+        /* จัดกลุ่มปุ่มกด */
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 25px 0;
+            flex-wrap: wrap;
+            width: 100%;
+        }
+
+        .btn-base {
+            border: none;
+            padding: 10px 25px;
+            font-size: 22px;
+            font-weight: 600;
+            font-family: 'Sarabun', sans-serif;
+            cursor: pointer;
+            border-radius: 8px;
+            box-shadow: 0px 4px 6px rgba(0,0,0,0.2);
+            transition: 0.2s;
+        }
+        .btn-base:active { transform: translateY(2px); box-shadow: 0px 2px 3px rgba(0,0,0,0.2); }
+        
+        .btn-calc { background-color: #37474F; color: #ffffff; }
+        .btn-calc-blue { background-color: #1976D2; color: #ffffff; }
+        .btn-clear { background-color: #D32F2F; color: #ffffff; }
+        .btn-magenta { background-color: #9C27B0; color: #ffffff; }
+        .btn-exit { background-color: #616161; color: #ffffff; margin-left: 10px; }
+
+        @media (max-width: 600px) {
+            .row { flex-direction: column; align-items: stretch; gap: 10px; max-width: 100%; }
+            .label-base { width: 100%; }
+            .input-field, .output-field { max-width: 100%; }
+            .btn-base { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container" id="top">
+    
+    <!-- หัวโปรแกรม -->
+    <div class="main-title">
+        <h1>โปรแกรมเตรียมน้ำเค็มสำหรับอนุบาลลูกกุ้ง</h1>
+        <h2>ออกแบบและพัฒนาโปรแกรมโดย รศ.ดร.เจษฎา อิสเหาะ</h2>
+    </div>
+
+    <!-- ส่วนนับผู้เข้าใช้ -->
+    <div class="counter-box">
+        ผู้เข้าใช้งานโปรแกรมสะสม: <strong id="visitorCount" style="color: #ffdf00; font-size: 26px;">กำลังโหลด...</strong> ครั้ง
+    </div>
+    
+    <!-- กรณีที่ 1 -->
+    <div class="case-box case-1">
+        <h3 class="case-title">กรณีที่ 1: คำนวณหาปริมาตร "น้ำจืด" ที่ต้องเติม (เพื่อลดความเค็ม)</h3>
+        <div class="row">
+            <div class="label-base label-cyan">น้ำทะเลความเค็ม (ppt)</div>
+            <input type="number" id="c1_initialSalinity" class="input-field arrow-nav" placeholder="ป้อนตัวเลข">
+        </div>
+        <div class="row">
+            <div class="label-base label-cyan">ปริมาตรน้ำเค็ม (ลบ.ม / ลิตร)</div>
+            <input type="number" id="c1_initialVolume" class="input-field arrow-nav" placeholder="ป้อนตัวเลข">
+        </div>
+        <div class="row">
+            <div class="label-base label-cyan">ต้องการเตรียมน้ำความเค็ม (ppt)</div>
+            <input type="number" id="c1_targetSalinity" class="input-field arrow-nav" placeholder="ป้อนตัวเลข">
+        </div>
+
+        <div class="btn-group">
+            <button class="btn-base btn-calc" onclick="calculateCase1()">คำนวณ</button>
+            <button class="btn-base btn-clear" onclick="clearCase1()">ล้างข้อมูล</button>
+        </div>
+
+        <div class="row">
+            <div class="label-base label-blue" style="font-weight: 800;">ต้องเติมน้ำจืดปริมาตร</div>
+            <input type="text" id="c1_freshwaterVolume" class="output-field" readonly placeholder="-">
+        </div>
+    </div>
+
+    <!-- กรณีที่ 2 -->
+    <div class="case-box case-2">
+        <h3 class="case-title">กรณีที่ 2: คำนวณหา "ความเค็มสุทธิ" (หลังจากการเติมน้ำจืดแล้ว)</h3>
+        <div class="row">
+            <div class="label-base label-pink">น้ำทะเลความเค็มเดิม (ppt)</div>
+            <input type="number" id="c2_initialSalinity" class="input-field arrow-nav" placeholder="ป้อนตัวเลข">
+        </div>
+        <div class="row">
+            <div class="label-base label-pink">ปริมาตรน้ำเค็มเดิม (ลบ.ม / ลิตร)</div>
+            <input type="number" id="c2_initialVolume" class="input-field arrow-nav" placeholder="ป้อนตัวเลข">
+        </div>
+        <div class="row">
+            <div class="label-base label-pink">ปริมาตรน้ำจืดที่เติมลงไป (ลบ.ม / ลิตร)</div>
+            <input type="number" id="c2_addedFreshwater" class="input-field arrow-nav" placeholder="ป้อนตัวเลข">
+        </div>
+
+        <div class="btn-group">
+            <button class="btn-base btn-calc" onclick="calculateCase2()">คำนวณ</button>
+            <button class="btn-base btn-clear" onclick="clearCase2()">ล้างข้อมูล</button>
+        </div>
+
+        <div class="row">
+            <div class="label-base label-green" style="font-weight: 800;">ความเค็มสุทธิที่ได้คือ (ppt)</div>
+            <input type="text" id="c2_finalSalinity" class="output-field" readonly placeholder="-">
+        </div>
+    </div>
+
+    <!-- กรณีที่ 3 -->
+    <div class="case-box case-3">
+        <h3 class="case-title">กรณีที่ 3: คำนวณหาปริมาตร "น้ำเค็มที่ต้องนำมาเติมเพิ่ม" <br><span style="font-size:18px; color:#555;">(เพื่อเพิ่มความเค็มในบ่อเดิม)</span></h3>
+        <div class="row">
+            <div class="label-base label-green">ความเค็มของน้ำในบ่อเดิม (ppt)</div>
+            <input type="number" id="c3_oldSalinity" class="input-field arrow-nav" placeholder="ป้อนตัวเลข">
+        </div>
+        <div class="row">
+            <div class="label-base label-green">ปริมาตรน้ำเค็มที่เหลือในบ่อ (ลบ.ม / ลิตร)</div>
+            <input type="number" id="c3_oldVolume" class="input-field arrow-nav" placeholder="ป้อนตัวเลข">
+        </div>
+        <div class="row">
+            <div class="label-base label-green">ความเค็มของน้ำที่จะนำมาเติม (ppt)</div>
+            <input type="number" id="c3_newSalinity" class="input-field arrow-nav" placeholder="ป้อนตัวเลข">
+        </div>
+        <div class="row">
+            <div class="label-base label-green">ต้องการเพิ่มความเค็มในบ่อเป็น (ppt)</div>
+            <input type="number" id="c3_targetSalinity" class="input-field arrow-nav" placeholder="ป้อนตัวเลข">
+        </div>
+
+        <div style="color: #c62828; font-weight: bold; margin-bottom: 10px; font-size: 18px; text-align: center;">
+            * ข้อควรระวัง: น้ำที่จะนำมาเติมต้องมีความเค็มมากกว่าความเค็มเป้าหมาย ไม่เช่นนั้นค่าจะติดลบ
+        </div>
+
+        <div class="btn-group">
+            <button class="btn-base btn-calc" onclick="calculateCase3()">คำนวณ</button>
+            <button class="btn-base btn-clear" onclick="clearCase3()">ล้างข้อมูล</button>
+        </div>
+
+        <div class="row">
+            <div class="label-base label-yellow" style="font-weight: 800;">ต้องนำน้ำเค็มชุดใหม่มาเติมปริมาตร</div>
+            <input type="text" id="c3_newVolume" class="output-field" readonly placeholder="-">
+        </div>
+        <button class="btn-base btn-magenta" onclick="goHome()" style="margin-top: 15px;">กลับสู่หน้าหลัก</button>
+    </div>
+
+    <!-- กรณีที่ 4 -->
+    <div class="case-box case-4">
+        <h3 class="case-title">กรณีที่ 4: คำนวณหา "ความเค็มสุทธิในบ่อ" <br><span style="font-size:18px; color:#555;">(หลังจากเติมน้ำเค็มใหม่ลงไปจนเต็มความจุกระชัง/บ่อ)</span></h3>
+        <div class="row">
+            <div class="label-base label-yellow">ความเค็มของน้ำในบ่อเดิม (ppt)</div>
+            <input type="number" id="c4_oldSalinity" class="input-field arrow-nav" placeholder="ป้อนตัวเลข">
+        </div>
+        <div class="row">
+            <div class="label-base label-yellow">ปริมาตรน้ำเค็มที่เหลือในบ่อเดิม (ลบ.ม / ลิตร)</div>
+            <input type="number" id="c4_oldVolume" class="input-field arrow-nav" placeholder="ป้อนตัวเลข">
+        </div>
+        <div class="row">
+            <div class="label-base label-yellow">ความเค็มของน้ำที่จะนำมาเติม (ppt)</div>
+            <input type="number" id="c4_newSalinity" class="input-field arrow-nav" placeholder="ป้อนตัวเลข">
+        </div>
+        <div class="row">
+            <div class="label-base label-yellow">ความจุน้ำรวมทั้งหมดภายในบ่อ (ลบ.ม / ลิตร)</div>
+            <input type="number" id="c4_totalVolume" class="input-field arrow-nav" placeholder="ป้อนตัวเลข">
+        </div>
+
+        <div class="btn-group">
+            <button class="btn-base btn-calc" onclick="calculateCase4()">คำนวณ</button>
+            <button class="btn-base btn-clear" onclick="clearCase4()">ล้างข้อมูล</button>
+        </div>
+
+        <div class="row">
+            <div class="label-base label-green" style="font-weight: 800;">ความเค็มสุทธิภายในบ่อ (ppt)</div>
+            <input type="text" id="c4_finalSalinity" class="output-field" readonly placeholder="-">
+        </div>
+        <button class="btn-base btn-magenta" onclick="goHome()" style="margin-top: 15px;">กลับสู่หน้าหลัก</button>
+    </div>
+
+    <!-- กรณีที่ 5 -->
+    <div class="case-box case-5">
+        <h3 class="case-title">กรณีที่ 5: คำนวณหา "สัดส่วนปริมาตรน้ำ 2 แหล่ง" <br><span style="font-size:18px; color:#555;">(เพื่อนำมาผสมกันให้ได้ความเค็มและปริมาตรเป้าหมาย)</span></h3>
+        
+        <div class="row" style="gap: 20px;">
+            <div style="flex: 1; display: flex; flex-direction: column; gap: 10px; align-items: center;">
+                <div class="label-base label-blue" style="width: 100%;">บ่อที่ 1 (แหล่งความเค็มต่ำ) ppt.</div>
+                <input type="number" id="c5_c1" class="input-field arrow-nav" style="width: 100%; max-width:none;" placeholder="ป้อนตัวเลข">
+            </div>
+            
+            <div style="flex: 1; display: flex; flex-direction: column; gap: 10px; align-items: center;">
+                <div class="label-base label-blue" style="width: 100%;">บ่อที่ 2 (แหล่งความเค็มสูง) ppt.</div>
+                <input type="number" id="c5_c2" class="input-field arrow-nav" style="width: 100%; max-width:none;" placeholder="ป้อนตัวเลข">
+            </div>
+        </div>
+
+        <div class="row" style="margin-top: 20px;">
+            <div class="label-base label-pink">ความเค็มเป้าหมายที่ต้องการ (ppt)</div>
+            <input type="number" id="c5_c3" class="input-field arrow-nav" placeholder="ป้อนตัวเลข">
+        </div>
+        <div class="row">
+            <div class="label-base label-pink">ปริมาตรรวมที่ต้องการ (ลบ.ม / ลิตร)</div>
+            <input type="number" id="c5_v3" class="input-field arrow-nav" placeholder="ป้อนตัวเลข">
+        </div>
+
+        <div class="btn-group">
+            <button class="btn-base btn-calc-blue" onclick="calculateCase5()">ประมวลผล</button>
+            <button class="btn-base btn-clear" onclick="clearCase5()">ล้างข้อมูล</button>
+        </div>
+
+        <div class="row" style="margin-bottom: 5px;">
+            <div class="label-base label-cyan" style="font-weight: 800;">ต้องใช้น้ำจาก บ่อที่ 1 ปริมาตร</div>
+            <input type="text" id="c5_v1" class="output-field" readonly placeholder="-">
+        </div>
+        <div class="row">
+            <div class="label-base label-cyan" style="font-weight: 800;">ต้องใช้น้ำจาก บ่อที่ 2 ปริมาตร</div>
+            <input type="text" id="c5_v2" class="output-field" readonly placeholder="-">
+        </div>
+        
+        <div class="btn-group" style="margin-top: 15px;">
+            <button class="btn-base btn-magenta" onclick="goHome()">กลับสู่หน้าหลัก</button>
+            <button class="btn-base btn-exit" onclick="exitProgram()">ออกจากโปรแกรม</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // ---------------- ระบบนำทางด้วยปุ่มลูกศร (Arrow Keys) ----------------
+    document.addEventListener("DOMContentLoaded", function() {
+        const inputs = Array.from(document.querySelectorAll('.arrow-nav'));
+        
+        inputs.forEach((input, index) => {
+            input.addEventListener('keydown', function(e) {
+                // กดลูกศรลง หรือ ขวา ให้ข้ามไปเซลล์ถัดไป
+                if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+                    e.preventDefault();
+                    if (index < inputs.length - 1) inputs[index + 1].focus();
+                } 
+                // กดลูกศรขึ้น หรือ ซ้าย ให้ย้อนกลับเซลล์ก่อนหน้า
+                else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    if (index > 0) inputs[index - 1].focus();
+                }
+            });
+        });
+        
+        // เรียกใช้ฟังก์ชันนับยอดเข้าชม
+        updateVisitorCount();
+    });
+
+    // ---------------- ระบบบันทึกยอดเข้าใช้งาน (Offline & Cross-Device) ----------------
+    // หมายเหตุ: เพื่อให้สามารถข้ามเครื่องได้จริง ต้องสร้าง Web App บน Google Apps Script และนำ URL มาใส่ตรงนี้
+    const GAS_TRACKING_URL = ""; 
+
+    async function updateVisitorCount() {
+        const countDisplay = document.getElementById("visitorCount");
+        let localCount = parseInt(localStorage.getItem('shrimpApp_visitCount')) || 0;
+        
+        if (navigator.onLine && GAS_TRACKING_URL !== "") {
+            // หากออนไลน์ และตั้งค่า URL เรียบร้อยแล้ว ให้ดึงข้อมูลจาก Server
+            try {
+                let response = await fetch(GAS_TRACKING_URL);
+                let data = await response.json();
+                countDisplay.innerText = data.total_views.toLocaleString();
+                localStorage.setItem('shrimpApp_visitCount', data.total_views); // อัปเดตข้อมูลสำรองลงเครื่อง
+            } catch (error) {
+                // กรณีดึงข้อมูลล้มเหลว ให้ใช้ค่าที่บันทึกไว้ในเครื่องบวก 1
+                localCount++;
+                localStorage.setItem('shrimpApp_visitCount', localCount);
+                countDisplay.innerText = localCount.toLocaleString() + " (ซิงค์ไม่สำเร็จ)";
+            }
+        } else {
+            // กรณีออฟไลน์ หรือยังไม่ได้ใส่ GAS URL ให้สะสมข้อมูลลงเฉพาะในเครื่องนั้นๆ ก่อน
+            localCount++;
+            localStorage.setItem('shrimpApp_visitCount', localCount);
+            countDisplay.innerText = localCount.toLocaleString();
+            if(!navigator.onLine) countDisplay.innerText += " (ออฟไลน์)";
+        }
+    }
+
+    // ---------------- ฟังก์ชันการคำนวณ (ทวนสอบแล้ว ถูกต้อง 100%) ----------------
+    function calculateCase1() {
+        let c1 = parseFloat(document.getElementById('c1_initialSalinity').value);
+        let v1 = parseFloat(document.getElementById('c1_initialVolume').value);
+        let c2 = parseFloat(document.getElementById('c1_targetSalinity').value);
+        if (isNaN(c1) || isNaN(v1) || isNaN(c2)) return alert("กรุณาป้อนข้อมูลให้ครบถ้วน");
+        if (c2 >= c1) return alert("ความเค็มเป้าหมาย ต้องน้อยกว่าความเค็มเดิมครับ");
+        document.getElementById('c1_freshwaterVolume').value = (((c1 * v1) / c2) - v1).toFixed(2);
+    }
+    function clearCase1() { ['c1_initialSalinity','c1_initialVolume','c1_targetSalinity','c1_freshwaterVolume'].forEach(id => document.getElementById(id).value = ''); }
+
+    function calculateCase2() {
+        let c1 = parseFloat(document.getElementById('c2_initialSalinity').value);
+        let v1 = parseFloat(document.getElementById('c2_initialVolume').value);
+        let v_add = parseFloat(document.getElementById('c2_addedFreshwater').value);
+        if (isNaN(c1) || isNaN(v1) || isNaN(v_add)) return alert("กรุณาป้อนข้อมูลให้ครบถ้วน");
+        document.getElementById('c2_finalSalinity').value = ((c1 * v1) / (v1 + v_add)).toFixed(2);
+    }
+    function clearCase2() { ['c2_initialSalinity','c2_initialVolume','c2_addedFreshwater','c2_finalSalinity'].forEach(id => document.getElementById(id).value = ''); }
+
+    function calculateCase3() {
+        let c_old = parseFloat(document.getElementById('c3_oldSalinity').value);
+        let v_old = parseFloat(document.getElementById('c3_oldVolume').value);
+        let c_new = parseFloat(document.getElementById('c3_newSalinity').value);
+        let c_target = parseFloat(document.getElementById('c3_targetSalinity').value);
+        if (isNaN(c_old) || isNaN(v_old) || isNaN(c_new) || isNaN(c_target)) return alert("กรุณาป้อนข้อมูลให้ครบถ้วน");
+        if (c_target <= c_old) return alert("ความเค็มเป้าหมาย ต้องมากกว่าความเค็มในบ่อเดิมครับ");
+        if (c_new <= c_target) return alert("ความเค็มของน้ำที่จะนำมาเติม ต้องมีความเค็มสูงกว่าความเค็มเป้าหมายครับ");
+        document.getElementById('c3_newVolume').value = ((v_old * (c_target - c_old)) / (c_new - c_target)).toFixed(2);
+    }
+    function clearCase3() { ['c3_oldSalinity','c3_oldVolume','c3_newSalinity','c3_targetSalinity','c3_newVolume'].forEach(id => document.getElementById(id).value = ''); }
+
+    function calculateCase4() {
+        let c1 = parseFloat(document.getElementById('c4_oldSalinity').value);
+        let v1 = parseFloat(document.getElementById('c4_oldVolume').value);
+        let c2 = parseFloat(document.getElementById('c4_newSalinity').value);
+        let v_total = parseFloat(document.getElementById('c4_totalVolume').value);
+        if (isNaN(c1) || isNaN(v1) || isNaN(c2) || isNaN(v_total)) return alert("กรุณาป้อนข้อมูลให้ครบถ้วน");
+        if (v_total <= v1) return alert("ความจุน้ำรวมทั้งหมด ต้องมากกว่าปริมาตรน้ำที่เหลือในบ่อเดิมครับ");
+        document.getElementById('c4_finalSalinity').value = (((c1 * v1) + (c2 * (v_total - v1))) / v_total).toFixed(2);
+    }
+    function clearCase4() { ['c4_oldSalinity','c4_oldVolume','c4_newSalinity','c4_totalVolume','c4_finalSalinity'].forEach(id => document.getElementById(id).value = ''); }
+
+    function calculateCase5() {
+        let c1 = parseFloat(document.getElementById('c5_c1').value); 
+        let c2 = parseFloat(document.getElementById('c5_c2').value); 
+        let c3 = parseFloat(document.getElementById('c5_c3').value); 
+        let v3 = parseFloat(document.getElementById('c5_v3').value); 
+        if (isNaN(c1) || isNaN(c2) || isNaN(c3) || isNaN(v3)) return alert("กรุณาป้อนข้อมูลให้ครบถ้วน");
+        if (c3 <= c1 || c3 >= c2) return alert("ความเค็มเป้าหมาย ต้องอยู่ระหว่างความเค็มของบ่อที่ 1 และบ่อที่ 2 ครับ");
+        let v1 = v3 * (c2 - c3) / (c2 - c1);
+        document.getElementById('c5_v1').value = v1.toFixed(2);
+        document.getElementById('c5_v2').value = (v3 - v1).toFixed(2);
+    }
+    function clearCase5() { ['c5_c1','c5_c2','c5_c3','c5_v3','c5_v1','c5_v2'].forEach(id => document.getElementById(id).value = ''); }
+
+    // ---------------- ฟังก์ชันเสริม ----------------
+    function goHome() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function exitProgram() {
+        if(confirm("คุณต้องการออกจากโปรแกรมหรือไม่?")) {
+            // คำสั่งปิดหน้าต่าง (ใช้ได้ผลดีเมื่อเปิดผ่าน LINE LIFF หรือหน้าต่างย่อย)
+            window.close();
+            // ถ้าไม่สามารถปิดหน้าต่างได้ ให้เด้งกลับหน้าก่อนหน้า
+            if(!window.closed) {
+                window.history.back();
+            }
+        }
+    }
+</script>
+
+</body>
+</html>
